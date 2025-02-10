@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X, Code2, Users, Lightbulb } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
-const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <a 
-    href={href} 
+const NavLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
+  <Link 
+    to={to}
     className="px-4 py-2 text-gray-600 font-normal hover:text-black transition-all duration-300 relative group"
   >
     {children}
     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-[#4B6BFB] via-[#7B5EFB] to-[#A158F6] group-hover:w-full transition-all duration-300" />
-  </a>
+  </Link>
 );
 
 interface Project {
@@ -19,37 +20,44 @@ interface Project {
   imageSrc: string;
   icon: React.ReactNode;
   color: string;
+  link: string;
 }
 
 const App = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const projects: Project[] = [
     {
       id: 1,
       title: "AI Customer Service",
-      description: "Developing AI SaaS web product - In Progress -",
-      imageSrc: "/customer-service.jpg",
+      description: "Developing an AI Customer service SaaS web product",
+      imageSrc: "https://raw.githubusercontent.com/emilyyy3/mu/refs/heads/main/project/public/customer-service1.jpg",
       icon: <Code2 className="w-6 h-6" />,
-      color: "from-blue-500/80 to-blue-600/80"
+      color: "from-blue-500/80 to-blue-600/80",
+      link: "/ai-customer-service"
     },
     {
       id: 2,
       title: "Female Friendly Iterations",
-      description: "Research, UX improvements and redesign for dating app. 150% user growth in 2024.",
-      imageSrc: "/female-friendly.jpg",
+      description: "Research, UX improvements and redesign for a dating app. 150% user growth in 2024.",
+      imageSrc: "https://raw.githubusercontent.com/emilyyy3/mu/refs/heads/main/project/public/female-friendly.jpg",
       icon: <Users className="w-6 h-6" />,
-      color: "from-pink-500/80 to-pink-600/80"
+      color: "from-[#CD4351]/80 to-[#CD4351]/80",
+      link: "/female-friendly"
     },
     {
       id: 3,
       title: "Microsoft Cortana",
-      description: "Voice UX, A/B Testing, Cross-platform Experience Design",
-      imageSrc: "/cortana.jpg",
+      description: "Voice UX, A/B Testing, Cross-platform Experience Design for Digital Assistant",
+      imageSrc: "https://raw.githubusercontent.com/emilyyy3/mu/refs/heads/main/project/public/cortana.jpg",
       icon: <Lightbulb className="w-6 h-6" />,
-      color: "from-indigo-500/80 to-indigo-600/80"
+      color: "from-[#104DD3]/80 to-[#104DD3]/80",
+      link: "https://docs.google.com/presentation/d/1OkVnHIhFfei_u9FN1uh--9Snm0IBwcd6OtfYG_DsMlk/edit?usp=sharing"
     }
   ];
+
+  const hashtags = ["UX", "Research", "Human-centered", "Data Driven", "Psychology", "Business"];
 
   return (
     <div className="bg-white min-h-screen">
@@ -62,14 +70,20 @@ const App = () => {
             animate={{ opacity: 1 }}
             className="text-2xl font-bold"
           >
-            <img src="/mu-logo.png" alt="Mu Logo" className="h-8" />
+            <Link to="/">
+              <img 
+                src="https://raw.githubusercontent.com/emilyyy3/mu/refs/heads/main/project/public/mu-logo.png" 
+                alt="Mu Logo" 
+                className="h-8"
+              />
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <NavLink href="#home">Home</NavLink>
-            <NavLink href="#projects">Projects</NavLink>
-            <NavLink href="#about">About</NavLink>
+            <NavLink to="/">Project</NavLink>
+            <NavLink to="/about">About</NavLink>
+            <NavLink to="/about-mu">關於我</NavLink>
           </div>
 
           {/* Mobile Menu Button */}
@@ -89,9 +103,9 @@ const App = () => {
             className="md:hidden absolute top-[72px] left-0 right-0 bg-white/80 backdrop-blur-sm border-b border-gray-100"
           >
             <div className="flex flex-col items-center py-4">
-              <NavLink href="#home">Home</NavLink>
-              <NavLink href="#projects">Projects</NavLink>
-              <NavLink href="#about">About</NavLink>
+              <NavLink to="/">Project</NavLink>
+              <NavLink to="/about">About</NavLink>
+              <NavLink to="/about-mu">關於我</NavLink>
             </div>
           </motion.div>
         )}
@@ -100,7 +114,7 @@ const App = () => {
       {/* Main Content */}
       <div className="pt-[72px]">
         {/* Hero Section */}
-        <div className="min-h-[calc(70vh-72px)] flex items-center px-6">
+        <div className="min-h-[calc(63vh-72px)] flex items-center px-6">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,7 +122,7 @@ const App = () => {
             className="max-w-6xl mx-auto w-full"
           >
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
-              <span className="text-black">Hi, I am Muchiao </span>
+              <span className="text-black">Hi, I am Mu. </span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4B6BFB] via-[#7B5EFB] to-[#A158F6]">
                 UX/Product Designer
               </span>
@@ -126,10 +140,11 @@ const App = () => {
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
-                className="group"
+                className="group cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={() => project.link.startsWith('http') ? window.open(project.link, '_blank') : navigate(project.link)}
               >
                 <div className="relative overflow-hidden rounded-lg mb-4">
                   <img 
@@ -139,52 +154,41 @@ const App = () => {
                   />
                   <motion.div 
                     className={`absolute inset-0 bg-gradient-to-b ${project.color} 
-                      flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                      opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
                   >
-                    <div className="flex items-center gap-3 mb-2">
-                      {project.icon}
-                      <h3 className="text-xl md:text-2xl font-bold text-white">{project.title}</h3>
+                    <div className="absolute bottom-0 left-0 p-6">
+                      <div className="flex items-center gap-3">
+                        {project.icon}
+                        <h3 className="text-xl md:text-2xl font-bold text-white">{project.title}</h3>
+                      </div>
                     </div>
-                    <p className="text-white/90">{project.description}</p>
                   </motion.div>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-900">{project.title}</h3>
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">{project.description}</p>
+                  <p className="text-black">{project.description}</p>
                 </div>
               </motion.div>
             ))}
           </div>
-        </div>
 
-        {/* About Section */}
-        <div id="about" className="bg-gray-50 py-20 px-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">About Me</h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">
-              I am a passionate UX/Product Designer focused on creating intuitive and engaging user experiences.
-              Over the past decade, I've had the privilege of working on exciting projects ranging from enterprise applications to innovative startup products.
-              I believe great design not only solves problems but brings joy to users.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <span className="px-4 py-2 bg-white rounded-full text-sm text-gray-600">User Research</span>
-              <span className="px-4 py-2 bg-white rounded-full text-sm text-gray-600">UI/UX Design</span>
-              <span className="px-4 py-2 bg-white rounded-full text-sm text-gray-600">Product Strategy</span>
-              <span className="px-4 py-2 bg-white rounded-full text-sm text-gray-600">Design Systems</span>
-            </div>
-          </motion.div>
+          {/* Hashtags */}
+          <div className="max-w-6xl mx-auto mt-16 flex flex-wrap gap-3 justify-center">
+            {hashtags.map((tag, index) => (
+              <span 
+                key={index}
+                className="px-4 py-2 bg-gray-100 rounded-full text-gray-600 text-sm font-medium"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <footer className="max-w-6xl mx-auto mt-16 py-8 text-center text-gray-500 text-sm border-t border-gray-100">
+            Copyright reserved by Muchiao, 2025
+          </footer>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="py-8 text-center text-gray-500 text-sm border-t border-gray-100">
-        © 2025 Muchiao Design All rights reserved.
-      </footer>
     </div>
   );
 };
